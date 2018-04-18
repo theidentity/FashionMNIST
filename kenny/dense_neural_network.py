@@ -52,14 +52,15 @@ model.add(Activation('softmax')) # This special "softmax" activation among other
                                  # that its values are all non-negative and sum to 1.
 
 
-model.compile(loss='categorical_crossentropy', optimizer='adam')
+model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=['accuracy'])
 
 model.fit(X_train, Y_train,
           batch_size=128, epochs=4, verbose=1,
           validation_data=(X_test, Y_test))
 
 score = model.evaluate(X_test, Y_test, verbose=0)
-print('Test score:', score)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
 
 
 # The predict_classes function outputs the highest probability class
