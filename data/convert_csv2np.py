@@ -25,10 +25,10 @@ def load_data():
 	testX = data['teX']
 	testY = data['teY']
 
-	print trainX.shape
-	print trainY.shape
-	print testX.shape
-	print testY.shape
+	print (trainX.shape)
+	print (trainY.shape)
+	print (testX.shape)
+	print (testY.shape)
 
 	return (trainX,trainY),(testX,testY)
 
