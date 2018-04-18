@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from keras.datasets import fashion_mnist
+(X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
 
 
 def cvt_csv():
@@ -31,8 +33,5 @@ def load_data():
 	print (testY.shape)
 
 	return (trainX,trainY),(testX,testY)
-
-
-save_zip()
 
 (trainX,trainY),(testX,testY) = load_data()

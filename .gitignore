@@ -2,3 +2,4 @@
 *.npy
 fashion-mnist_test.csv
 fashion-mnist_train.csv
+.vscode
