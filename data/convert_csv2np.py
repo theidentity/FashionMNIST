@@ -17,22 +17,6 @@ def save_zip():
 	(trainX,trainY),(testX,testY) = cvt_csv()
 	np.savez_compressed('data',trX=trainX,trY=trainY,teX=testX,teY=testY)
 
-def load_data():
-	data = np.load('data.npz')
-
-	trainX = data['trX']
-	trainY = data['trY']
-	testX = data['teX']
-	testY = data['teY']
-
-	print trainX.shape
-	print trainY.shape
-	print testX.shape
-	print testY.shape
-
-	return (trainX,trainY),(testX,testY)
-
 
 save_zip()
-
-(trainX,trainY),(testX,testY) = load_data()
+# (trainX,trainY),(testX,testY) = load_data()

@@ -1,6 +1,7 @@
 import keras
 from keras.models import Sequential,load_model,save_model
 from keras.layers import Dense,Activation,Flatten,Dropout
+from keras.layers import Reshape
 from keras.layers import Conv2D,MaxPool2D
 from keras.layers import BatchNormalization
 from keras.optimizers import Adam,SGD,rmsprop
@@ -13,9 +14,9 @@ import numpy as np
 num_epochs = 50
 batch_size = 1024
 num_classes = 10
-img_width,img_height = 28,28
 model_prefix = ''
-inp_shape = (img_width,img_height,1)
+inp_shape = (784,)
+img_width,img_height = 28,28
 
 def load_data():
 	data = np.load('data/data.npz')
@@ -32,96 +33,59 @@ def load_data():
 
 	return (trainX,trainY),(testX,testY)
 
-def CNN_bare():
-	# 89.39
+def FCN():
+	# 89.71
 	global model_prefix
-	model_prefix = 'CNN_bare'
+	model_prefix = 'FCN'
 
 	model = Sequential()
-
-	model.add(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=inp_shape))
-	model.add(MaxPool2D(pool_size=(2, 2)))
-	model.add(Dropout(0.25))
-
-	model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
-	model.add(MaxPool2D(pool_size=(2, 2)))
-	model.add(Dropout(0.25))
-
-	model.add(Flatten())
-	model.add(Dense(128, activation='relu'))
-	model.add(Dropout(0.25))
-	model.add(Dense(64, activation='relu'))
-	model.add(Dropout(0.5))
+	model.add(Reshape((784,),input_shape=(img_width,img_height,1)))
+	model.add(Dense(1024,activation='relu'))
+	model.add(Dense(1024,activation='relu'))
+	model.add(Dense(1024,activation='relu'))
 	model.add(Dense(num_classes, activation='softmax'))
 
 	return model
 
-def CNN():
-	# 88.56
+def FCN_with_Dropout():
+	# 89.84
 	global model_prefix
-	model_prefix = 'CNN'
+	model_prefix = 'FCN_with_Dropout'
 
 	model = Sequential()
-
-	model.add(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=inp_shape))
-	model.add(MaxPool2D(pool_size=(2, 2)))
+	model.add(Reshape((784,),input_shape=(img_width,img_height,1)))
+	model.add(Dense(1024,activation='relu'))
 	model.add(Dropout(0.25))
-
-	model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
-	model.add(MaxPool2D(pool_size=(2, 2)))
+	model.add(Dense(1024))
 	model.add(Dropout(0.25))
-
-	model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
-	model.add(MaxPool2D(pool_size=(2, 2)))
-	model.add(Dropout(0.25))
-
-	model.add(Flatten())
-	model.add(Dense(128, activation='relu'))
-	model.add(Dropout(0.25))
-	model.add(Dense(64, activation='relu'))
-	model.add(Dropout(0.5))
 	model.add(Dense(num_classes, activation='softmax'))
 
 	return model
 
-def CNN_with_BN():
-	# 92.75
+def Large_FCN():
+	# 90.07
 	global model_prefix
-	model_prefix = 'CNNBn'
+	model_prefix = 'Large_FCN'
 
 	model = Sequential()
-
-	model.add(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=inp_shape))
-	model.add(MaxPool2D(pool_size=(2, 2)))
-	model.add(BatchNormalization())
+	model.add(Reshape((784,),input_shape=(img_width,img_height,1)))
+	model.add(Dense(1024,activation='relu'))
 	model.add(Dropout(0.25))
-
-	model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
-	model.add(MaxPool2D(pool_size=(2, 2)))
-	model.add(BatchNormalization())
+	model.add(Dense(1024,activation='relu'))
 	model.add(Dropout(0.25))
-
-	model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
-	model.add(MaxPool2D(pool_size=(2, 2)))
-	model.add(BatchNormalization())
+	model.add(Dense(1024,activation='relu'))
 	model.add(Dropout(0.25))
-
-	model.add(Flatten())
-	model.add(Dense(128, activation='relu'))
-	model.add(BatchNormalization())
+	model.add(Dense(512,activation='relu'))
 	model.add(Dropout(0.25))
-
-	model.add(Dense(64, activation='relu'))
-	model.add(BatchNormalization())
-	model.add(Dropout(0.5))
-
+	model.add(Dense(128,activation='relu'))
+	model.add(Dropout(0.25))
 	model.add(Dense(num_classes, activation='softmax'))
 
 	return model
 
-model = CNN_bare()
-# model = CNN()
-# model = CNN_with_BN()
+# model = FCN()
+# model = FCN_with_Dropout()
+model = Large_FCN()
 
 model.summary()
 
@@ -167,5 +131,5 @@ from matplotlib import pyplot as plt
 plt.figure()
 plt.plot(hist.history['loss'])
 plt.plot(hist.history['val_loss'])
-plt.legend(['Training loss','sameation loss'])
+plt.legend(['Training loss','Validation loss'])
 plt.savefig(model_prefix+'.jpg')
