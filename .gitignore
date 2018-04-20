@@ -1,4 +1,5 @@
 *.pyc
 *.npy
-fashion-mnist_test.csv
-fashion-mnist_train.csv
+*.h5
+data/fashion-mnist_test.csv
+data/fashion-mnist_train.csv
