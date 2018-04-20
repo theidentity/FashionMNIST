@@ -3,3 +3,7 @@
 *.h5
 data/fashion-mnist_test.csv
 data/fashion-mnist_train.csv
+fashion-mnist_test.csv
+fashion-mnist_train.csv
+.vscode
+
